@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { ProductsModule } from './products/products.module';
+import { ProductsModule } from '../modules/products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from './config/typeorm.config.service';
+import { TypeOrmConfigService } from '../config/typeorm.config.service';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -23,6 +24,19 @@ import { AppService } from './app.service';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        transform: true,
+        transformOptions: {
+          enableImplicitConversion: true,
+        },
+        whitelist: true,
+        stopAtFirstError: false,
+      }),
+    },
+  ],
 })
 export class AppModule {}
