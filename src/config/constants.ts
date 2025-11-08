@@ -1,0 +1,5 @@
+export const PAGINATION_DEFAULT_SKIP = 0;
+export const PAGINATION_MIN_SKIP = 0;
+export const PAGINATION_DEFAULT_LIMIT = 5;
+export const PAGINATION_MAX_LIMIT = 5;
+export const PAGINATION_MIN_LIMIT = 1;

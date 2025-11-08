@@ -1,17 +1,19 @@
 import { IsOptional, IsInt, Min, Max } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  PAGINATION_MAX_LIMIT,
+  PAGINATION_MIN_LIMIT,
+  PAGINATION_MIN_SKIP,
+} from 'src/config/constants';
 
 export class QueryProductDto {
   @IsOptional()
-  @Type(() => Number)
   @IsInt()
-  @Min(0)
-  skip?: number = 0;
+  @Min(PAGINATION_MIN_SKIP)
+  skip?: number;
 
   @IsOptional()
-  @Type(() => Number)
   @IsInt()
-  @Min(1)
-  @Max(5)
-  limit?: number = 5;
+  @Min(PAGINATION_MIN_LIMIT)
+  @Max(PAGINATION_MAX_LIMIT)
+  limit?: number;
 }

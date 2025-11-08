@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class ProductDto {
   @Expose()
@@ -23,6 +23,7 @@ export class ProductDto {
   color: string;
 
   @Expose()
+  @Transform(({ value }) => (value === null ? null : Number(value)))
   price: number;
 
   @Expose()

@@ -8,6 +8,10 @@ import { Repository } from 'typeorm';
 import { Paginated } from 'src/modules/dto/paginated.dto';
 import { plainToInstance } from 'class-transformer';
 import { ProductDto } from './dto/product.dto';
+import {
+  PAGINATION_DEFAULT_SKIP,
+  PAGINATION_DEFAULT_LIMIT,
+} from '../../config/constants';
 
 @Injectable()
 export class ProductsService {
@@ -26,13 +30,16 @@ export class ProductsService {
   }
 
   async findAll(query: QueryProductDto): Promise<Paginated<ProductDto>> {
-    const { skip = 0, limit = 5 } = query;
+    const { skip = PAGINATION_DEFAULT_SKIP, limit = PAGINATION_DEFAULT_LIMIT } =
+      query;
 
     const [data, total] = await this.productsRepository.findAndCount({
       skip,
       take: limit,
       order: { createdAt: 'DESC' },
     });
+
+    console.log({ data, total });
 
     const transformedData = plainToInstance(ProductDto, data, {
       excludeExtraneousValues: true,

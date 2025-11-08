@@ -29,7 +29,7 @@ export class Product {
   @Column('char', { length: 3 })
   currency: string;
 
-  @Column('numeric', { precision: 10, scale: 0 })
+  @Column('integer', { default: 0 })
   stock: number;
 
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
