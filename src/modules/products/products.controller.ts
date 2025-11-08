@@ -13,13 +13,12 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { QueryProductDto } from '../dto/paginated-query-dto';
+import { QueryProductDto } from './dto/query-product.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ProductDto } from './dto/product.dto';
 import { Paginated } from '../dto/paginated.dto';
 
 @Controller({ path: 'products', version: '1' })
-// @Serialize(ProductDto)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 

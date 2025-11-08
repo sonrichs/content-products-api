@@ -5,7 +5,7 @@ import {
   PAGINATION_MIN_SKIP,
 } from 'src/config/constants';
 
-export class QueryProductDto {
+export class PaginatedQueryDto {
   @IsOptional()
   @IsInt()
   @Min(PAGINATION_MIN_SKIP)

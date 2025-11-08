@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { QueryProductDto } from '../dto/paginated-query-dto';
+import { QueryProductDto } from './dto/query-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
@@ -12,6 +12,7 @@ import {
   PAGINATION_DEFAULT_SKIP,
   PAGINATION_DEFAULT_LIMIT,
 } from '../../config/constants';
+import { getNumberRangeFindOperator } from '../utils/find-operators';
 
 @Injectable()
 export class ProductsService {
@@ -30,17 +31,38 @@ export class ProductsService {
   }
 
   async findAll(query: QueryProductDto): Promise<Paginated<ProductDto>> {
+    // Pagination controls
     const { skip = PAGINATION_DEFAULT_SKIP, limit = PAGINATION_DEFAULT_LIMIT } =
       query;
+
+    // Filter controls
+    const filters = {
+      sku: query.sku,
+      name: query.name,
+      brand: query.brand,
+      model: query.model,
+      category: query.category,
+      color: query.color,
+      currency: query.currency,
+    };
+
+    // Price range filter controls
+    const { minPrice, maxPrice } = query;
+    const priceFilter = getNumberRangeFindOperator(minPrice, maxPrice);
+
+    // Adding price filter if defined
+    if (priceFilter) {
+      filters['price'] = priceFilter;
+    }
 
     const [data, total] = await this.productsRepository.findAndCount({
       skip,
       take: limit,
+      where: filters,
       order: { createdAt: 'DESC' },
     });
 
-    console.log({ data, total });
-
+    // Manually transform entity to DTOs
     const transformedData = plainToInstance(ProductDto, data, {
       excludeExtraneousValues: true,
     });

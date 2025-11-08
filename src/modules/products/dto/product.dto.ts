@@ -31,4 +31,10 @@ export class ProductDto {
 
   @Expose()
   stock: number;
+
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }
