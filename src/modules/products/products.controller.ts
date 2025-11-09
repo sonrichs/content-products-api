@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpStatus,
@@ -12,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { QueryProductDto } from './dto/query-product.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ProductDto } from './dto/product.dto';
@@ -33,18 +31,6 @@ export class ProductsController {
   @Serialize(Paginated<ProductDto>)
   findAll(@Query() query?: QueryProductDto) {
     return this.productsService.findAll(query);
-  }
-
-  @Get(':id')
-  @Serialize(ProductDto)
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(id);
-  }
-
-  @Patch(':id')
-  @Serialize(ProductDto)
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
   }
 
   @Delete(':id')

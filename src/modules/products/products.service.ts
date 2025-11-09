@@ -67,6 +67,7 @@ export class ProductsService {
     });
 
     // Manually transform entity to DTOs
+    // TODO: Try to fix this with Serialize interceptor later
     const transformedData = plainToInstance(ProductDto, data, {
       excludeExtraneousValues: true,
     });

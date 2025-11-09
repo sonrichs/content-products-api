@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { SignInResultDto } from '../dto/sign-in-result.dto';
+import { StatusDto } from '../dto/status.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: Pick<SignInResultDto, 'sub' | 'username'>) {
+  validate(payload: StatusDto) {
     return { sub: payload.sub, username: payload.username };
   }
 }
