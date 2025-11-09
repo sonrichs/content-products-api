@@ -26,7 +26,6 @@ export class AuthController {
   }
 
   @Get('status')
-  @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   status(@Req() req: Request): Promise<StatusDto> {
