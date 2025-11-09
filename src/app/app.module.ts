@@ -7,11 +7,13 @@ import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { APP_PIPE } from '@nestjs/core';
 import { ReportsModule } from 'src/modules/reports/reports.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     ProductsModule,
     ReportsModule,
+    AuthModule,
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
