@@ -4,7 +4,7 @@ import { LocalGuard } from './guards/local.guard';
 import { JwtGuard } from './guards/jwt.guard';
 import { SignUpDto } from './dto/sign-up.dto';
 import type { Request } from 'express';
-import { ApiBearerAuth, ApiBody, ApiHeader } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { SignInResultDto } from './dto/sign-in-result.dto';
 import { LoginDto } from './dto/login.dto';
 import { StatusDto } from './dto/status.dto';
