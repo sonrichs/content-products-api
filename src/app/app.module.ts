@@ -6,14 +6,16 @@ import { TypeOrmConfigService } from '../config/typeorm.config.service';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { APP_PIPE } from '@nestjs/core';
-import { ReportsModule } from 'src/modules/reports/reports.module';
-import { AuthModule } from 'src/auth/auth.module';
+import { ReportsModule } from '../modules/reports/reports.module';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../modules/users/users.module';
 
 @Module({
   imports: [
     ProductsModule,
     ReportsModule,
     AuthModule,
+    UsersModule,
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),

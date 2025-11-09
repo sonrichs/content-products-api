@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from 'src/modules/users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -9,15 +11,50 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-  validateUser(user: LoginDto) {
-    const { email, password } = user;
-    const existingUser = this.usersService.fakeFindOneByEmail(email);
-    if (!existingUser || existingUser.password !== password) {
+
+  async signUp(body: SignUpDto) {
+    const { username, password } = body;
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = await this.usersService.create({
+      username,
+      password: hashedPassword,
+    });
+
+    return await this.signIn(user.id, user.username);
+  }
+
+  async authenticate({ username, password }: LoginDto) {
+    const user = await this.validateUser({ username, password });
+    if (!user) {
       return null;
     }
-    const result = { id: existingUser.id, email: existingUser.email };
+    return this.signIn(user.id, user.username);
+  }
+
+  async validateUser({ username, password }: LoginDto) {
+    const existingUser = await this.usersService.findOneByUsername(username);
+    if (!existingUser) {
+      return null;
+    }
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingUser.password,
+    );
+    if (!isPasswordValid) {
+      return null;
+    }
+    return existingUser;
+  }
+
+  async signIn(userId: string, username: string) {
+    const payload = { sub: userId, username };
     return {
-      access_token: this.jwtService.sign(result),
+      accessToken: await this.jwtService.signAsync(payload),
+      sub: payload.sub,
+      username: payload.username,
     };
   }
 }
