@@ -16,7 +16,7 @@ import {
   PAGINATION_DEFAULT_SKIP,
   PAGINATION_DEFAULT_LIMIT,
 } from '../../config/constants';
-import { getNumberRangeFindOperator } from '../utils/find-operators';
+import { getNumberRangeFindOperator } from '../utils/find-operators.utils';
 
 @Injectable()
 export class ProductsService {
@@ -34,7 +34,7 @@ export class ProductsService {
     return this.productsRepository.save(product);
   }
 
-  async findAll(query: QueryProductDto): Promise<Paginated<ProductDto>> {
+  async findAll(query: QueryProductDto = {}): Promise<Paginated<ProductDto>> {
     // Pagination controls
     const { skip = PAGINATION_DEFAULT_SKIP, limit = PAGINATION_DEFAULT_LIMIT } =
       query;

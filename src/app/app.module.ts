@@ -6,10 +6,12 @@ import { TypeOrmConfigService } from '../config/typeorm.config.service';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { APP_PIPE } from '@nestjs/core';
+import { ReportsModule } from 'src/modules/reports/reports.module';
 
 @Module({
   imports: [
     ProductsModule,
+    ReportsModule,
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
@@ -30,9 +32,6 @@ import { APP_PIPE } from '@nestjs/core';
       provide: APP_PIPE,
       useValue: new ValidationPipe({
         transform: true,
-        transformOptions: {
-          enableImplicitConversion: true,
-        },
         whitelist: true,
         stopAtFirstError: false,
       }),

@@ -31,7 +31,7 @@ export class ProductsController {
 
   @Get()
   @Serialize(Paginated<ProductDto>)
-  findAll(@Query() query: QueryProductDto) {
+  findAll(@Query() query?: QueryProductDto) {
     return this.productsService.findAll(query);
   }
 
