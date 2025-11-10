@@ -1,8 +1,10 @@
 import {
   Column,
+  CreateDateColumn,
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -37,12 +39,12 @@ export class Product {
   @Column('integer', { default: 0 })
   stock: number;
 
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @DeleteDateColumn()
-  daletedAt: Date | null;
+  deletedAt: Date | null;
 }

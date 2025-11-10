@@ -38,4 +38,10 @@ export class ProductsController {
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
   }
+
+  // Remove me later
+  @Get('/external-sync')
+  syncProductsFromExternalApi() {
+    return this.productsService.syncProductsFromExternalApi();
+  }
 }
