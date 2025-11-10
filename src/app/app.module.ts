@@ -9,6 +9,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { ReportsModule } from '../modules/reports/reports.module';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../modules/users/users.module';
+import { TasksModule } from '../tasks/tasks.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from '../modules/users/users.module';
     ReportsModule,
     AuthModule,
     UsersModule,
+    TasksModule,
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),

@@ -10,12 +10,15 @@ import { QueryProductDto } from './dto/query-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
-import { Paginated } from 'src/modules/dto/paginated.dto';
+import { Paginated } from '../../modules/dto/paginated.dto';
 import { plainToInstance } from 'class-transformer';
 import { ProductDto } from './dto/product.dto';
 import {
   PAGINATION_DEFAULT_SKIP,
   PAGINATION_DEFAULT_LIMIT,
+  PAGINATION_MIN_SKIP,
+  PAGINATION_MIN_LIMIT,
+  PAGINATION_MAX_LIMIT,
 } from '../../config/constants';
 import { getNumberRangeFindOperator } from '../utils/find-operators.utils';
 import { HttpService } from '@nestjs/axios';
@@ -44,18 +47,29 @@ export class ProductsService {
     return this.productsRepository.upsert(product, ['sku']);
   }
 
-  upsertBatch(createProductDtoBatch: CreateProductDto[]) {
+  async upsertBatch(createProductDtoBatch: CreateProductDto[]) {
     const products = this.productsRepository.create(createProductDtoBatch);
-    return this.productsRepository.upsert(products, {
+    const result = await this.productsRepository.upsert(products, {
       conflictPaths: ['sku'],
       skipUpdateIfNoValuesChanged: true,
     });
+    // POSSIBLE ENHANCEMENT: Process result to log created vs updated counts
+    return result;
   }
 
   async findAll(query: QueryProductDto = {}): Promise<Paginated<ProductDto>> {
     // Pagination controls
-    const { skip = PAGINATION_DEFAULT_SKIP, limit = PAGINATION_DEFAULT_LIMIT } =
+    let { skip = PAGINATION_DEFAULT_SKIP, limit = PAGINATION_DEFAULT_LIMIT } =
       query;
+
+    // Adjusting skip and limit values within configured ranges
+    skip = Math.max(skip, PAGINATION_MIN_SKIP);
+    this.logger.debug(`Adjusted skip value: ${skip}`);
+    limit = Math.min(
+      Math.max(limit, PAGINATION_MIN_LIMIT),
+      PAGINATION_MAX_LIMIT,
+    );
+    this.logger.debug(`Adjusted limit value: ${limit}`);
 
     // Filter controls
     const filters = {
@@ -172,7 +186,7 @@ export class ProductsService {
       `Contentful response has ${contentfulProductfields.items.length} items`,
     );
     return contentfulProductfields.items.map((item) => {
-      this.logger.debug(`Mapping item fields: ${JSON.stringify(item.fields)}`);
+      this.logger.debug(`Mapping item with sku: ${item.fields.sku}`);
       return {
         sku: item.fields.sku,
         name: item.fields.name,

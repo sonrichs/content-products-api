@@ -3,9 +3,9 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from 'src/modules/users/users.module';
+import { UsersModule } from '../modules/users/users.module';
 import { PassportModule } from '@nestjs/passport';
-import { JWT_EXPIRATION_TIME } from 'src/config/constants';
+import { JWT_EXPIRATION_TIME } from '../config/constants';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
