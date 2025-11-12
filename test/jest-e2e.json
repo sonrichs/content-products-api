@@ -5,12 +5,14 @@
     "ts"
   ],
   "rootDir": ".",
+  "setupFilesAfterEnv": [
+    "./test-db.setup.ts"
+  ],
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "testTimeout": 60000,
-  "maxWorkers": 1,
-  "runInBand": true
+  "maxWorkers": 1
 }

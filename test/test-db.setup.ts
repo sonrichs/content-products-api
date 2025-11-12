@@ -12,21 +12,16 @@ let container: StartedPostgreSqlContainer;
 export const setupTestDatabase = async (): Promise<TypeOrmModuleOptions> => {
   console.log('Starting PostgreSQL test container...');
 
-  container = await new PostgreSqlContainer('postgres:15-alpine')
-    .withDatabase('products_api_test')
-    .withUsername('test_user')
-    .withPassword('test_password')
-    .withExposedPorts(5432)
-    .start();
+  container = await new PostgreSqlContainer('postgres:latest').start();
 
   console.log(
-    `Test database started on ${container.getHost()}:${container.getMappedPort(5432)}`,
+    `Test database started on ${container.getHost()}:${container.getPort()}`,
   );
 
   return {
     type: 'postgres',
     host: container.getHost(),
-    port: container.getMappedPort(5432),
+    port: container.getPort(),
     username: container.getUsername(),
     password: container.getPassword(),
     database: container.getDatabase(),

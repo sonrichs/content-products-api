@@ -31,6 +31,13 @@
 $ npm install
 ```
 
+## Generate and run migrations
+
+```bash
+$ npm run typeorm:migration:generate
+$ npm run typeorm:migration:run
+```
+
 ## Compile and run the project
 
 ```bash
