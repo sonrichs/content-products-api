@@ -21,6 +21,16 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
           autoLoadEntities: true,
           migrationsRun: false,
         };
+      case 'test':
+        return {
+          type: 'postgres',
+          url: dbUrl
+            ?.replace('{user}', dbUser ?? '')
+            .replace('{password}', dbPassword ?? ''),
+          autoLoadEntities: true,
+          synchronize: true,
+          migrationsRun: false,
+        };
       case 'production':
         return {
           type: 'postgres',

@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -152,9 +151,7 @@ export class ProductsService {
       !contentType ||
       !accessToken
     ) {
-      throw new InternalServerErrorException(
-        'Missing required External API configuration',
-      );
+      throw new Error('Missing required External API configuration');
     }
 
     const fullUrl = `${baseUrl}${path
@@ -169,7 +166,7 @@ export class ProductsService {
         catchError((error: AxiosError) => {
           this.logger.error('Error fetching products from external API:');
           this.logger.error(error.response?.data || error.message);
-          throw new InternalServerErrorException('An error happened!');
+          throw new Error('An error happened!');
         }),
       ),
     );

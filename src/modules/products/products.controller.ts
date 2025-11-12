@@ -15,6 +15,7 @@ import { QueryProductDto } from './dto/query-product.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ProductDto } from './dto/product.dto';
 import { Paginated } from '../dto/paginated.dto';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @Controller({ path: 'products', version: '1' })
 export class ProductsController {
@@ -39,7 +40,7 @@ export class ProductsController {
     return this.productsService.remove(id);
   }
 
-  // Remove me later
+  @ApiExcludeEndpoint()
   @Get('/external-sync')
   syncProductsFromExternalApi() {
     return this.productsService.syncProductsFromExternalApi();
