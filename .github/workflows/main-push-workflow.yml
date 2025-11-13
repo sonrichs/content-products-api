@@ -5,7 +5,8 @@ on:
     branches: [main]
 
 jobs:
-  build-and-push:
+  # Job 1: Build and push the application image
+  build-and-push-app:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,9 +18,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      ## TODO: Add the rest of environment variables needed
       - name: Create .env file
         run: |
+          echo "CONTENTFUL_BASE_URL=${{ vars.CONTENTFUL_BASE_URL }}" >> .env
+          echo "CONTENTFUL_ENTRIES_PATH=${{ vars.CONTENTFUL_ENTRIES_PATH }}" >> .env
+          echo "CONTENTFUL_SPACE_ID=${{ vars.CONTENTFUL_SPACE_ID }}" >> .env
+          echo "CONTENTFUL_ENVIRONMENT=${{ vars.CONTENTFUL_ENVIRONMENT }}" >> .env
+          echo "CONTENTFUL_CONTENT_TYPE=${{ vars.CONTENTFUL_CONTENT_TYPE }}" >> .env
+          echo "MOCKI_API_URL=${{ vars.MOCKI_API_URL }}" >> .env
+          echo "DB_HOST=${{ vars.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
+          echo "DB_NAME=${{ vars.DB_NAME }}" >> .env
+          echo "PORT=3000" >> .env
+          echo "NODE_ENV=production" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
@@ -29,5 +40,30 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: Dockerfile.app
           push: true
           tags: sonrichs/content-products-api:latest
+  # Job 2: Build and push the cp-api PostgreSQL image
+  build-and-push-postgres:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and push Docker image (Postgres)
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile.pg
+          push: true
+          tags: sonrichs/cp-api-postgres:latest
+          build-args: |
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ vars.DB_NAME }}
