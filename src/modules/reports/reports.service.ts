@@ -81,7 +81,7 @@ export class ReportsService {
       .select('product.category', 'category')
       .addSelect('COUNT(product.id)', 'totalProducts')
       .addSelect('COALESCE(SUM(product.stock), 0)', 'totalStock')
-      .addSelect('COALESCE(AVG(product.price), 0)', 'averagePrice')
+      .addSelect('COALESCE(ROUND(AVG(product.price), 2), 0)', 'averagePrice')
       .addSelect(
         'COALESCE(SUM(product.price * product.stock), 0)',
         'inventoryValue',

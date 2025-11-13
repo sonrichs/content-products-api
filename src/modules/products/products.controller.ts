@@ -15,6 +15,8 @@ import { QueryProductDto } from './dto/query-product.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ProductDto } from './dto/product.dto';
 import { Paginated } from '../dto/paginated.dto';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import { ApiPaginatedResponse } from '../../decorators/api-paginated-response.decorator';
 
 @Controller({ path: 'products', version: '1' })
 export class ProductsController {
@@ -28,8 +30,9 @@ export class ProductsController {
   }
 
   @Get()
-  @Serialize(Paginated<ProductDto>)
-  findAll(@Query() query?: QueryProductDto) {
+  // @Serialize(Paginated)
+  @ApiPaginatedResponse(ProductDto)
+  findAll(@Query() query?: QueryProductDto): Promise<Paginated<ProductDto>> {
     return this.productsService.findAll(query);
   }
 
@@ -37,5 +40,11 @@ export class ProductsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('/external-sync')
+  syncProductsFromExternalApi() {
+    return this.productsService.syncProductsFromExternalApi();
   }
 }

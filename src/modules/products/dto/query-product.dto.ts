@@ -1,5 +1,6 @@
 import { IsNumber, IsOptional, IsString, Length, Min } from 'class-validator';
 import { PaginatedQueryDto } from '../../dto/paginated-query-dto';
+import { Type } from 'class-transformer';
 
 export class QueryProductDto extends PaginatedQueryDto {
   @IsString()
@@ -32,11 +33,13 @@ export class QueryProductDto extends PaginatedQueryDto {
   @IsOptional()
   color?: string;
 
+  @Type(() => Number)
   @IsNumber()
   @Min(0)
   @IsOptional()
   minPrice?: number;
 
+  @Type(() => Number)
   @IsNumber()
   @Min(0)
   @IsOptional()
