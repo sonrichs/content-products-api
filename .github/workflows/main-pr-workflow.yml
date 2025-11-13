@@ -1,0 +1,34 @@
+name: Tests and lint
+
+on:
+    pull_request:
+        branches: [main]
+
+jobs:
+    test-and-lint:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "22"
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run linting
+              run: npm run lint
+
+            - name: Run tests with coverage
+              run: npm run test:cov
+
+            - name: Check coverage report
+              uses: themichaelhall/check-code-coverage@v2
+              with:
+                  report: clover.xml
+                  required-percentage: 30
