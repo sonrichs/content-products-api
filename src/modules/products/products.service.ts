@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { Paginated } from '../../modules/dto/paginated.dto';
-import { plainToInstance } from 'class-transformer';
 import { ProductDto } from './dto/product.dto';
 import {
   PAGINATION_DEFAULT_SKIP,
@@ -94,13 +93,7 @@ export class ProductsService {
       skip,
       take: limit,
       where: filters,
-      order: { createdAt: 'DESC' },
-    });
-
-    // Manually transform entity to DTOs
-    // TODO: Try to fix this with Serialize interceptor later
-    const transformedData = plainToInstance(ProductDto, data, {
-      excludeExtraneousValues: true,
+      order: { createdAt: 'DESC', sku: 'ASC' },
     });
 
     return {
@@ -109,7 +102,7 @@ export class ProductsService {
         skip,
         limit,
       },
-      data: transformedData,
+      data,
     };
   }
 

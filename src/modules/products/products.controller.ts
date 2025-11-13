@@ -30,7 +30,6 @@ export class ProductsController {
   }
 
   @Get()
-  // @Serialize(Paginated)
   @ApiPaginatedResponse(ProductDto)
   findAll(@Query() query?: QueryProductDto): Promise<Paginated<ProductDto>> {
     return this.productsService.findAll(query);

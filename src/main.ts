@@ -9,7 +9,7 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn', 'log'],
+    logger: ['error', 'warn', 'log', 'debug'],
   });
   app.enableVersioning({
     type: VersioningType.URI,
