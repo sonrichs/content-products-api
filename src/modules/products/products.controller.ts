@@ -15,7 +15,7 @@ import { QueryProductDto } from './dto/query-product.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ProductDto } from './dto/product.dto';
 import { Paginated } from '../dto/paginated.dto';
-import { ApiExcludeEndpoint, ApiResponse } from '@nestjs/swagger';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { ApiPaginatedResponse } from 'src/decorators/api-paginated-response.decorator';
 
 @Controller({ path: 'products', version: '1' })
