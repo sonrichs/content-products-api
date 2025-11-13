@@ -29,24 +29,30 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:cov
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Check coverage report
+        uses: themichaelhall/check-code-coverage@v2
         with:
-          file: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
+          report: coverage.xml
+          required-percentage: 30
 
-      - name: Check test coverage threshold
-        run: |
-          COVERAGE=$(npm run test:cov:json | grep -o '"lines":{"total":[0-9]*,"covered":[0-9]*' | grep -o 'covered":[0-9]*' | cut -d: -f2)
-          TOTAL=$(npm run test:cov:json | grep -o '"lines":{"total":[0-9]*,"covered":[0-9]*' | grep -o 'total":[0-9]*' | cut -d: -f2)
-          PERCENTAGE=$((COVERAGE * 100 / TOTAL))
-          echo "Coverage: $PERCENTAGE%"
-          if [ $PERCENTAGE -lt 30 ]; then
-            echo "Coverage is below 30%"
-            exit 1
-          fi
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     file: ./coverage/lcov.info
+      #     flags: unittests
+      #     name: codecov-umbrella
+      #     fail_ci_if_error: true
+
+      # - name: Check test coverage threshold
+      #   run: |
+      #     COVERAGE=$(npm run test:cov:json | grep -o '"lines":{"total":[0-9]*,"covered":[0-9]*' | grep -o 'covered":[0-9]*' | cut -d: -f2)
+      #     TOTAL=$(npm run test:cov:json | grep -o '"lines":{"total":[0-9]*,"covered":[0-9]*' | grep -o 'total":[0-9]*' | cut -d: -f2)
+      #     PERCENTAGE=$((COVERAGE * 100 / TOTAL))
+      #     echo "Coverage: $PERCENTAGE%"
+      #     if [ $PERCENTAGE -lt 30 ]; then
+      #       echo "Coverage is below 30%"
+      #       exit 1
+      #     fi
   build-and-push:
     runs-on: ubuntu-latest
 
@@ -62,10 +68,10 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "DB_USER=${{ secrets.DB_USER }}" | base64 -d >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | base64 -d  >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" | base64 -d  >> .env
-          echo "CONTENTFUL_ACCESS_TOKEN=${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" | base64 -d  >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "CONTENTFUL_ACCESS_TOKEN=${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" >> .env
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
