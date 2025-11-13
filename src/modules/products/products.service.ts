@@ -97,12 +97,6 @@ export class ProductsService {
       order: { createdAt: 'DESC', sku: 'ASC' },
     });
 
-    // Manually transform entity to DTOs
-    // TODO: Try to fix this with Serialize interceptor later
-    const transformedData = plainToInstance(ProductDto, data, {
-      excludeExtraneousValues: true,
-    });
-
     return {
       meta: {
         total,
