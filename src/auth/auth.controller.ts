@@ -8,16 +8,19 @@ import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { SignInResultDto } from './dto/sign-in-result.dto';
 import { LoginDto } from './dto/login.dto';
 import { StatusDto } from './dto/status.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Serialize(SignInResultDto)
   @Post('signup')
   signup(@Body() body: SignUpDto): Promise<SignInResultDto> {
     return this.authService.signUp(body);
   }
 
+  @Serialize(SignInResultDto)
   @Post('login')
   @ApiBody({ type: LoginDto })
   @UseGuards(LocalGuard)
@@ -25,6 +28,7 @@ export class AuthController {
     return Promise.resolve(req.user as SignInResultDto);
   }
 
+  @Serialize(StatusDto)
   @Get('status')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()

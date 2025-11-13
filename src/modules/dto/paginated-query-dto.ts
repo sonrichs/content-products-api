@@ -5,14 +5,17 @@ import {
   PAGINATION_MIN_LIMIT,
   PAGINATION_MIN_SKIP,
 } from '../../config/constants';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PaginatedQueryDto {
+  @ApiPropertyOptional()
   @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(PAGINATION_MIN_SKIP)
   skip?: number;
 
+  @ApiPropertyOptional()
   @IsOptional()
   @Type(() => Number)
   @IsInt()

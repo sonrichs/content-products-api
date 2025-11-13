@@ -2,14 +2,14 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { ProductsModule } from '../modules/products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from '../config/typeorm.config.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { APP_PIPE } from '@nestjs/core';
 import { ReportsModule } from '../modules/reports/reports.module';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../modules/users/users.module';
 import { TasksModule } from '../tasks/tasks.module';
+import { TypeOrmConfigService } from '../config/typeorm.config.service';
 
 @Module({
   imports: [
@@ -18,9 +18,6 @@ import { TasksModule } from '../tasks/tasks.module';
     AuthModule,
     UsersModule,
     TasksModule,
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
@@ -29,6 +26,10 @@ import { TasksModule } from '../tasks/tasks.module';
         `.env.${process.env.NODE_ENV}`,
         '.env',
       ],
+    }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+      inject: [ConfigService],
     }),
   ],
   controllers: [AppController],

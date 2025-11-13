@@ -43,7 +43,7 @@ export class ProductsService {
       throw new ConflictException('Product SKU already exists');
     }
     const product = this.productsRepository.create(createProductDto);
-    return this.productsRepository.upsert(product, ['sku']);
+    return this.productsRepository.save(product);
   }
 
   async upsertBatch(createProductDtoBatch: CreateProductDto[]) {
@@ -154,15 +154,17 @@ export class ProductsService {
       throw new Error('Missing required External API configuration');
     }
 
-    const fullUrl = `${baseUrl}${path
-      .replace('{spaceId}', spaceId)
-      .replace(
-        '{environment}',
-        environment,
-      )}?access_token=${accessToken}&content_type=${contentType}`;
+    // const fullUrl = `${baseUrl}${path
+    //   .replace('{spaceId}', spaceId)
+    //   .replace(
+    //     '{environment}',
+    //     environment,
+    //   )}?access_token=${accessToken}&content_type=${contentType}`;
+
+    const mockFullUrl = this.configService.get<string>('MOCKI_API_URL') || '';
 
     const { data } = await firstValueFrom(
-      this.httpService.get<ContentfulProductFields>(fullUrl).pipe(
+      this.httpService.get<ContentfulProductFields>(mockFullUrl).pipe(
         catchError((error: AxiosError) => {
           this.logger.error('Error fetching products from external API:');
           this.logger.error(error.response?.data || error.message);

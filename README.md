@@ -25,17 +25,31 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+## Local project setup
 
 ```bash
 $ npm install
 ```
 
+## Prod project setup
+
+1. Compose the container
+
+```bash
+$ docker-compose up
+```
+
+2. Run migrations
+
+```bash
+$ npm run migration:run
+```
+
 ## Generate and run migrations
 
 ```bash
-$ npm run typeorm:migration:generate
-$ npm run typeorm:migration:run
+$ npm run migration:generate --name=<migration_name> (optional name)
+$ npm run migration:run
 ```
 
 ## Compile and run the project

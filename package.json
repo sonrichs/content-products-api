@@ -17,9 +17,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json",
-    "typeorm:migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source.ts src/migrations",
-    "typeorm:migration:run": "typeorm-ts-node-commonjs migration:run -d src/data-source.ts"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "ts-node --require tsconfig-paths/register ./node_modules/typeorm/cli",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/db/data-source.config.ts",
+    "migration:generate": "npm run typeorm -- -d ./src/db/data-source.config.ts migration:generate ./src/db/migrations/%npm_config_name%",
+    "migration:create": "npm run typeorm -- migration:create ./src/db/migrations/",
+    "migration:revert": "npm run typeorm -- -d ./src/db/data-source.config.ts migration:revert",
+    "migration:show": "npm run typeorm -- migration:show -d ./src/db/data-source.config.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
@@ -93,6 +97,12 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/main.ts",
+      "src/app",
+      "src/db"
+    ]
   }
 }
