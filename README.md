@@ -108,7 +108,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
-### Run production docker image
+## Run production docker image
 
 1. Compose the container.
    The app and the db containers have default env variables built into the docker image.
@@ -122,11 +122,11 @@ $ docker-compose up
    There are default values already set up in the APP and the DB if not overwriten in docker-compose.yml file.
    Please ask for these values to the image owner in case you want to use defaults.
 
-DB_HOST=example
-DB_PORT=example
-DB_USER=example
-DB_PASSWORD=example
-DB_NAME=example
+- `DB_HOST=example`
+- `DB_PORT=example`
+- `DB_USER=example`
+- `DB_PASSWORD=example`
+- `DB_NAME=example`
 
 3. Run migrations
 
@@ -137,4 +137,5 @@ $ npm run migration:run
 4. View the docs at /api/docs
 
 5. Manual products-sync at
-   GET /api/v1/products/external-sync
+
+- `GET /api/v1/products/external-sync`
