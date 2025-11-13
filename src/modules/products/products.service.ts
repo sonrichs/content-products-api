@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { Paginated } from '../../modules/dto/paginated.dto';
-import { plainToInstance } from 'class-transformer';
 import { ProductDto } from './dto/product.dto';
 import {
   PAGINATION_DEFAULT_SKIP,
