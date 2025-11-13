@@ -31,27 +31,6 @@
 $ npm install
 ```
 
-## Prod project setup
-
-1. Compose the container
-
-```bash
-$ docker-compose up
-```
-
-2. Run migrations
-
-```bash
-$ npm run migration:run
-```
-
-## Generate and run migrations
-
-```bash
-$ npm run migration:generate --name=<migration_name> (optional name)
-$ npm run migration:run
-```
-
 ## Compile and run the project
 
 ```bash
@@ -63,6 +42,17 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+```
+
+## Generate and run migrations
+
+```bash
+# Optional 'migration_name'
+$ npm run migration:generate --name=<migration_name>
+$ npm run migration:run
+$ npm run migration:create
+$ npm run migration:revert
+$ npm run migration:show
 ```
 
 ## Run tests
@@ -117,3 +107,31 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+### Run production docker image
+
+1. Compose the container.
+   The app and the db containers have default env variables built into the docker image.
+   It is possible to override them by providing them inside the docker-compose file
+
+```bash
+$ docker-compose up
+```
+
+2. Set up .env file for migrations with at least these variables
+   There are default values already set up in the APP and the DB if not overwriten in docker-compose.yml file.
+   Please ask for these values to the image owner in case you want to use defaults.
+
+DB_HOST=example
+DB_PORT=example
+DB_USER=example
+DB_PASSWORD=example
+DB_NAME=example
+
+3. Run migrations
+
+```bash
+$ npm run migration:run
+```
+
+4. View the docs at /api/docs

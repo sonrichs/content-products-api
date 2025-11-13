@@ -94,7 +94,7 @@ export class ProductsService {
       skip,
       take: limit,
       where: filters,
-      order: { createdAt: 'DESC' },
+      order: { createdAt: 'DESC', sku: 'ASC' },
     });
 
     // Manually transform entity to DTOs
@@ -109,7 +109,7 @@ export class ProductsService {
         skip,
         limit,
       },
-      data: transformedData,
+      data,
     };
   }
 

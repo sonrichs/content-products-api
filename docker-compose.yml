@@ -3,6 +3,23 @@ services:
     image: sonrichs/content-products-api:latest
     container_name: content-products-api-app
     restart: always
+    # Override if needed
+    # environment:
+    #   CONTENTFUL_BASE_URL: https://cdn.contentful.com
+    #   CONTENTFUL_ENTRIES_PATH: /spaces/{spaceId}/environments/{environment}/entries
+    #   CONTENTFUL_SPACE_ID: 9xs1613l9f7v
+    #   CONTENTFUL_ACCESS_TOKEN: token
+    #   CONTENTFUL_ENVIRONMENT: master
+    #   CONTENTFUL_CONTENT_TYPE: product
+    #   MOCKI_API_URL: https://mocki.io/v1/11e37745-0c03-4b63-8385-1bd67425543c
+    #   DB_HOST: localhost
+    #   DB_PORT: 5432
+    #   DB_USER: postgres
+    #   DB_PASSWORD: supersecret
+    #   DB_NAME: content-products
+    #   JWT_SECRET: supersecretjwtkey
+    #   PORT: 3000
+    #   NODE_ENV: development
     ports:
       - "8080:3000"
     depends_on:
@@ -11,6 +28,11 @@ services:
   db:
     image: sonrichs/cp-api-postgres:latest
     container_name: content-products-api-db
+    # Override if needed
+    # environment:
+    # POSTGRES_USER: ${DB_USER}
+    # POSTGRES_PASSWORD: ${DB_PASSWORD}
+    # POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
