@@ -16,7 +16,7 @@ import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ProductDto } from './dto/product.dto';
 import { Paginated } from '../dto/paginated.dto';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
-import { ApiPaginatedResponse } from 'src/decorators/api-paginated-response.decorator';
+import { ApiPaginatedResponse } from '../../decorators/api-paginated-response.decorator';
 
 @Controller({ path: 'products', version: '1' })
 export class ProductsController {

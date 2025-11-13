@@ -8,7 +8,7 @@ import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { SignInResultDto } from './dto/sign-in-result.dto';
 import { LoginDto } from './dto/login.dto';
 import { StatusDto } from './dto/status.dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class AuthController {
