@@ -136,5 +136,5 @@ $ npm run migration:run
 
 4. View the docs at /api/docs
 
-5. Manual migrations at
+5. Manual products-sync at
    GET /api/v1/products/external-sync
