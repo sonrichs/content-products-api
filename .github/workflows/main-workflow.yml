@@ -32,7 +32,7 @@ jobs:
       - name: Check coverage report
         uses: themichaelhall/check-code-coverage@v2
         with:
-          report: coverage.xml
+          report: clover.xml
           required-percentage: 30
 
       # - name: Upload coverage to Codecov
